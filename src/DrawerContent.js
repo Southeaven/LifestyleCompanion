@@ -16,6 +16,10 @@ function DrawerContent({ navigation, ...props}) {
             label="Activity form"
             onPress={() => navigation.navigate('ActivityForm')}
           />
+          <DrawerItem
+            label="Chart screen"
+            onPress={() => navigation.navigate('ChartScreen')}
+          />
         </Drawer.Section>
       </View>
     </DrawerContentScrollView>

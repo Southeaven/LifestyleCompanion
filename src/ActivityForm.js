@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 function ActivityForm() {
   const [activityName, setActivityName] = useState('');
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('');
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -27,11 +27,16 @@ function ActivityForm() {
           value={activityName}
           onChangeText={text => setActivityName(text)}
         />
+        <TextInput
+          label="Activity date"
+          value={date.toString()}
+          readonly
+          onFocus={showDatepicker}
+        />
         <Button
-          onPress={showDatepicker}
           mode="contained"
         >
-          Show date picker!
+          Submit (not working yet)
         </Button>
       </View>
       <View>
@@ -39,7 +44,7 @@ function ActivityForm() {
           <DateTimePicker
             testID="dateTimePicker"
             timeZoneOffsetInMinutes={0}
-            value={date}
+            value={date !== '' ? date : new Date() }
             is24Hour={true}
             display="default"
             onChange={onChange}
