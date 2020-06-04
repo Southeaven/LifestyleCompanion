@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Header from './Header';
-import LocationComponent from './LocationComponent';
-import ActivityForm from './ActivityForm';
-import ChartScreen from './ChartScreen';
+import LocationComponent from './screens/LocationComponent';
+import ActivityForm from './screens/ActivityForm';
+import ChartScreen from './screens/ChartScreen';
 
 const Stack = createStackNavigator();
 
