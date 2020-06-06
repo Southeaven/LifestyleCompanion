@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 import { TextInput, Button, Title } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import addActivity from '../store/actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function ActivityForm() {
+function ActivityFormTemplate({ addActivity }) {
   const [activityName, setActivityName] = useState('');
 
   const [date, setDate] = useState('');
@@ -48,6 +50,7 @@ function ActivityForm() {
         <Button
           mode="contained"
           style={styles.button}
+          // onPress={addActivity}
         >
           Submit (not working yet)
         </Button>
@@ -68,4 +71,12 @@ function ActivityForm() {
   );
 }
 
-export default ActivityForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    addTodo: activity => {
+      dispatch(addActivity(activity))
+    }
+  }
+}
+
+export default ActivityForm = connect(null, mapDispatchToProps)(ActivityFormTemplate);
