@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { TextInput, Button, Title } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import addActivity from '../store/actions';
+import * as addActivity from '../store/actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,8 +11,24 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10
+  },
+  inputsRow: {
+    flexDirection: 'row'
+  },
+  input: {
+    flex: 1
+  },
+  firstInput: {
+    marginRight: 5
+  },
+  secondInput: {
+    marginLeft: 5
   }
 });
+
+const parseDate = (date) => {
+  return date;
+};
 
 function ActivityFormTemplate({ addActivity }) {
   const [activityName, setActivityName] = useState('');
@@ -40,13 +56,42 @@ function ActivityFormTemplate({ addActivity }) {
           mode="outlined"
           onChangeText={text => setActivityName(text)}
         />
-        <TextInput
-          label="Activity date"
-          value={date.toString()}
-          readonly
-          mode="outlined"
-          onFocus={showDatepicker}
-        />
+        <View style={styles.inputsRow}>
+          <TextInput
+            label="Activity start date"
+            value={date.toString()}
+            readonly
+            mode="outlined"
+            onFocus={showDatepicker}
+            style={[styles.input, styles.firstInput]}
+          />
+          <TextInput
+            label="Activity start time"
+            value={date.toString()}
+            readonly
+            mode="outlined"
+            onFocus={showDatepicker}
+            style={[styles.input, styles.secondInput]}
+          />
+        </View>
+        <View style={styles.inputsRow}>
+          <TextInput
+            label="Activity end date"
+            value={date.toString()}
+            readonly
+            mode="outlined"
+            onFocus={showDatepicker}
+            style={[styles.input, styles.firstInput]}
+          />
+          <TextInput
+            label="Activity end time"
+            value={date.toString()}
+            readonly
+            mode="outlined"
+            onFocus={showDatepicker}
+            style={[styles.input, styles.secondInput]}
+          />
+        </View>
         <Button
           mode="contained"
           style={styles.button}
@@ -79,4 +124,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default ActivityForm = connect(null, mapDispatchToProps)(ActivityFormTemplate);
+export default connect(null, mapDispatchToProps)(ActivityFormTemplate);
