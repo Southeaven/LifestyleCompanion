@@ -1,8 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Header from './Header';
-import LocationComponent from './screens/LocationComponent';
+import WelcomeScreen from './screens/WelcomeScreen';
 import ActivityForm from './screens/ActivityForm';
+import LocationComponent from './screens/LocationComponent';
 import ChartScreen from './screens/ChartScreen';
 
 const Stack = createStackNavigator();
@@ -14,8 +15,9 @@ function HomeScreen() {
         header: ({ navigation }) => <Header navigation={navigation} />
       }}
     >
-      <Stack.Screen name="LocationComponent" component={LocationComponent} />
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <Stack.Screen name="ActivityForm" component={ActivityForm} />
+      <Stack.Screen name="LocationComponent" component={LocationComponent} />
       <Stack.Screen name="ChartScreen" component={ChartScreen} />
     </Stack.Navigator>
   );

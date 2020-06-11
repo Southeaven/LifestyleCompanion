@@ -1,48 +1,59 @@
-import React, {useState} from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View
+} from 'react-native';
 import { connect } from 'react-redux';
-import { TextInput, Button, Title } from 'react-native-paper';
+import {
+  Button,
+  TextInput,
+  Title
+} from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import {
+  format,
+  setSeconds
+} from 'date-fns';
 import * as addActivity from '../store/actions';
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 10
-  },
   button: {
     marginTop: 10
   },
-  inputsRow: {
-    flexDirection: 'row'
-  },
-  input: {
+  buttonInRow: {
     flex: 1
   },
-  firstInput: {
+  buttonRow: {
+    flexDirection: 'row'
+  },
+  container: {
+    margin: 10
+  },
+  leftButton: {
     marginRight: 5
   },
-  secondInput: {
+  rightButton: {
     marginLeft: 5
   }
 });
 
-const parseDate = (date) => {
-  return date;
-};
-
 function ActivityFormTemplate({ addActivity }) {
-  const [activityName, setActivityName] = useState('');
-
-  const [date, setDate] = useState('');
   const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
+
+  const [activityName, setActivityName] = useState('');
+  const [date, setDate] = useState(new Date());
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
     setShow(false);
-    setDate(currentDate);
+    if (selectedDate) {
+      const currentDate = setSeconds(selectedDate, 0) || date;
+      setDate(currentDate);
+    }
   };
 
-  const showDatepicker = () => {
+  const showDatepicker = (event, isDate) => {
+    setMode(isDate ? 'date' : 'time');
     setShow(true);
   };
 
@@ -52,45 +63,31 @@ function ActivityFormTemplate({ addActivity }) {
         <Title>Activity Form</Title>
         <TextInput
           label="Activity name"
-          value={activityName}
           mode="outlined"
           onChangeText={text => setActivityName(text)}
+          value={activityName}
         />
-        <View style={styles.inputsRow}>
-          <TextInput
-            label="Activity start date"
-            value={date.toString()}
-            readonly
-            mode="outlined"
-            onFocus={showDatepicker}
-            style={[styles.input, styles.firstInput]}
-          />
-          <TextInput
-            label="Activity start time"
-            value={date.toString()}
-            readonly
-            mode="outlined"
-            onFocus={showDatepicker}
-            style={[styles.input, styles.secondInput]}
-          />
-        </View>
-        <View style={styles.inputsRow}>
-          <TextInput
-            label="Activity end date"
-            value={date.toString()}
-            readonly
-            mode="outlined"
-            onFocus={showDatepicker}
-            style={[styles.input, styles.firstInput]}
-          />
-          <TextInput
-            label="Activity end time"
-            value={date.toString()}
-            readonly
-            mode="outlined"
-            onFocus={showDatepicker}
-            style={[styles.input, styles.secondInput]}
-          />
+        <TextInput
+          editable={false}
+          label="Activity date"
+          mode="outlined"
+          value={format(date, 'yyyy/MM/dd, HH:mm')}
+        />
+        <View style={styles.buttonRow}>
+          <Button
+            mode="contained"
+            onPress={e => showDatepicker(e, true)}
+            style={[styles.button, styles.buttonInRow, styles.leftButton]}
+          >
+            Set date
+          </Button>
+          <Button
+            mode="contained"
+            onPress={e => showDatepicker(e, false)}
+            style={[styles.button, styles.buttonInRow, styles.rightButton]}
+          >
+            Set time
+          </Button>
         </View>
         <Button
           mode="contained"
@@ -103,12 +100,10 @@ function ActivityFormTemplate({ addActivity }) {
       <View>
         {show && (
           <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={date !== '' ? date : new Date() }
-            is24Hour={true}
             display="default"
+            mode={mode}
             onChange={onChange}
+            value={date}
           />
         )}
       </View>

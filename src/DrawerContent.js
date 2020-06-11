@@ -9,12 +9,16 @@ function DrawerContent({ navigation, ...props}) {
       <View>
         <Drawer.Section>
           <DrawerItem
-            label="Location screen"
-            onPress={() => navigation.navigate('LocationComponent')}
+            label="Welcome"
+            onPress={() => navigation.navigate('WelcomeScreen')}
           />
           <DrawerItem
             label="Activity form"
             onPress={() => navigation.navigate('ActivityForm')}
+          />
+          <DrawerItem
+            label="Location screen"
+            onPress={() => navigation.navigate('LocationComponent')}
           />
           <DrawerItem
             label="Chart screen"
