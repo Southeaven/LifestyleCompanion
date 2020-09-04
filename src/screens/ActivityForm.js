@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
   Button,
   TextInput,
-  Title
+  Title,
+  HelperText,
+  Text,
+  Snackbar,
 } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {
   format,
-  setSeconds
+  setSeconds,
 } from 'date-fns';
-import * as addActivity from '../store/actions';
+import { setActivityNotification } from '../store/notifications';
+import { addActivity } from '../store/activities';
 
 const styles = StyleSheet.create({
   button: {
@@ -37,15 +41,27 @@ const styles = StyleSheet.create({
   }
 });
 
-function ActivityFormTemplate({ addActivity }) {
+function ActivityFormTemplate({
+  addOneActivity,
+  addActivityNotificationState,
+  toggleActivityNotification,
+  navigation,
+}) {
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
+  const [isError, setIsError] = useState(false);
 
   const [activityName, setActivityName] = useState('');
   const [date, setDate] = useState(new Date());
 
+  const handleActivityNameChange = (newActivityName) => {
+    setIsError(newActivityName === '');
+    setActivityName(newActivityName);
+  };
+
   const onChange = (event, selectedDate) => {
     setShow(false);
+
     if (selectedDate) {
       const currentDate = setSeconds(selectedDate, 0) || date;
       setDate(currentDate);
@@ -57,6 +73,17 @@ function ActivityFormTemplate({ addActivity }) {
     setShow(true);
   };
 
+  const handleAddActivity = (event) => {
+    if (!isError) {
+      addOneActivity({
+        activityName,
+        date
+      });
+      toggleActivityNotification(true);
+      // navigation.navigate('WelcomeScreen');
+    }
+  };
+
   return (
     <View>
       <View style={styles.container}>
@@ -64,9 +91,13 @@ function ActivityFormTemplate({ addActivity }) {
         <TextInput
           label="Activity name"
           mode="outlined"
-          onChangeText={text => setActivityName(text)}
+          onChangeText={text => handleActivityNameChange(text)}
           value={activityName}
+          error={isError}
         />
+        <HelperText type="error" visible={isError}>
+          Activity name is required
+        </HelperText>
         <TextInput
           editable={false}
           label="Activity date"
@@ -92,10 +123,25 @@ function ActivityFormTemplate({ addActivity }) {
         <Button
           mode="contained"
           style={styles.button}
-          // onPress={addActivity}
+          onPress={e => handleAddActivity(e)}
         >
-          Submit (not working yet)
+          Submit
         </Button>
+        <Button
+          mode="contained"
+          style={styles.button}
+          onPress={e => navigation.navigate('WelcomeScreen')}
+        >
+          Back to main menu
+        </Button>
+      </View>
+      <View>
+        <Snackbar
+          visible={addActivityNotificationState}
+          onDismiss={() => toggleActivityNotification(false)}
+        >
+          Added an activity
+        </Snackbar>
       </View>
       <View>
         {show && (
@@ -111,12 +157,21 @@ function ActivityFormTemplate({ addActivity }) {
   );
 }
 
+const mapStateToProps = state => {
+  const { notifications: { addActivity } } = state;
+
+  return { addActivityNotificationState: addActivity };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    addTodo: activity => {
+    addOneActivity: activity => {
       dispatch(addActivity(activity))
+    },
+    toggleActivityNotification: activityState => {
+      dispatch(setActivityNotification(activityState))
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(ActivityFormTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityFormTemplate);

@@ -5,6 +5,7 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import ActivityForm from './screens/ActivityForm';
 import LocationComponent from './screens/LocationComponent';
 import ChartScreen from './screens/ChartScreen';
+import DebugScreen from './screens/DebugScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ function HomeScreen() {
       <Stack.Screen name="ActivityForm" component={ActivityForm} />
       <Stack.Screen name="LocationComponent" component={LocationComponent} />
       <Stack.Screen name="ChartScreen" component={ChartScreen} />
+      <Stack.Screen name="DebugScreen" component={DebugScreen} />
     </Stack.Navigator>
   );
 }

@@ -24,6 +24,10 @@ function DrawerContent({ navigation, ...props}) {
             label="Chart screen"
             onPress={() => navigation.navigate('ChartScreen')}
           />
+          <DrawerItem
+            label="DEBUG SCREEN"
+            onPress={() => navigation.navigate('DebugScreen')}
+          />
         </Drawer.Section>
       </View>
     </DrawerContentScrollView>
