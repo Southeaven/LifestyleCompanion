@@ -4,7 +4,10 @@ import {
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { List } from 'react-native-paper';
+import {
+  List,
+  Text,
+} from 'react-native-paper';
 import { format } from 'date-fns';
 
 const styles = StyleSheet.create({
@@ -20,12 +23,18 @@ const styles = StyleSheet.create({
 function DebugScreen({ activities, ...props}) {
   const listItems = activities.map((activity) =>  {
     const activityDate = format(activity.date, 'yyyy/MM/dd, HH:mm');
+    const timeslotDate = format(activity.timeslot, 'yyyy/MM/dd, HH:mm');
 
     return (
       <List.Item
-        key={activityDate}
+        key={activity.id}
         title={activity.activityName}
-        description={activityDate}
+        description={() => (
+          <View>
+            <Text>{activityDate}</Text>
+            <Text>{timeslotDate}</Text>
+          </View>
+        )}
       />
     );
   });

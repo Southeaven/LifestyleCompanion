@@ -6,11 +6,13 @@ import {
 import { connect } from 'react-redux';
 import {
   Button,
+  HelperText,
+  RadioButton,
+  Snackbar,
+  Text,
   TextInput,
   Title,
-  HelperText,
-  Text,
-  Snackbar,
+  TouchableRipple,
 } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {
@@ -22,23 +24,31 @@ import { addActivity } from '../store/activities';
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 10
+    marginTop: 10,
   },
   buttonInRow: {
-    flex: 1
+    flex: 1,
   },
   buttonRow: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   container: {
-    margin: 10
+    margin: 10,
   },
   leftButton: {
-    marginRight: 5
+    marginRight: 5,
   },
   rightButton: {
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  // TODO: Remove 'hide' helper
+  hide: {
+    display: 'none',
+  },
 });
 
 function ActivityFormTemplate({
@@ -50,6 +60,7 @@ function ActivityFormTemplate({
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
   const [isError, setIsError] = useState(false);
+  const [checked, setChecked] = React.useState('single');
 
   const [activityName, setActivityName] = useState('');
   const [date, setDate] = useState(new Date());
@@ -80,7 +91,6 @@ function ActivityFormTemplate({
         date
       });
       toggleActivityNotification(true);
-      // navigation.navigate('WelcomeScreen');
     }
   };
 
@@ -88,6 +98,31 @@ function ActivityFormTemplate({
     <View>
       <View style={styles.container}>
         <Title>Activity Form</Title>
+        <View>
+          <Text>Radio buttons below are not hooked to anything meaningful</Text>
+          <TouchableRipple onPress={() => setChecked('single')}>
+            <View style={styles.row}>
+              <View pointerEvents="none">
+                <RadioButton.Android
+                  value="single"
+                  status={checked === 'single' ? 'checked' : 'unchecked'}
+                />
+              </View>
+              <Text>Single date</Text>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple onPress={() => setChecked('range')}>
+            <View style={styles.row}>
+              <View pointerEvents="none">
+                <RadioButton.Android
+                  value="range"
+                  status={checked === 'range' ? 'checked' : 'unchecked'}
+                  />
+              </View>
+              <Text>Range</Text>
+            </View>
+          </TouchableRipple>
+        </View>
         <TextInput
           label="Activity name"
           mode="outlined"
@@ -119,6 +154,31 @@ function ActivityFormTemplate({
           >
             Set time
           </Button>
+        </View>
+        {/* TODO: Hook coode below to second date */}
+        <View style={styles.hide}>
+          <TextInput
+            editable={false}
+            label="Activity date"
+            mode="outlined"
+            value={format(date, 'yyyy/MM/dd, HH:mm')}
+          />
+          <View style={styles.buttonRow}>
+            <Button
+              mode="contained"
+              onPress={e => showDatepicker(e, true)}
+              style={[styles.button, styles.buttonInRow, styles.leftButton]}
+            >
+              Set date
+            </Button>
+            <Button
+              mode="contained"
+              onPress={e => showDatepicker(e, false)}
+              style={[styles.button, styles.buttonInRow, styles.rightButton]}
+            >
+              Set time
+            </Button>
+          </View>
         </View>
         <Button
           mode="contained"
