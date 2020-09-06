@@ -15,10 +15,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 10
   },
-  listStyles: {
-    width: 100,
-    height: 100
-  }
 });
 
 function DebugScreen({ activities, ...props}) {

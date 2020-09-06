@@ -9,6 +9,7 @@ import {
   HelperText,
   RadioButton,
   Snackbar,
+  Subheading,
   Text,
   TextInput,
   Title,
@@ -123,7 +124,7 @@ function ActivityFormTemplate({
       <View style={styles.container}>
         <Title>Activity Form</Title>
         <View>
-          <Text>Radio buttons below are not hooked to anything meaningful</Text>
+          <Text>Do you want to input single date or range?</Text>
           <TouchableRipple onPress={() => setChecked('single')}>
             <View style={styles.row}>
               <View pointerEvents="none">
@@ -147,6 +148,7 @@ function ActivityFormTemplate({
             </View>
           </TouchableRipple>
         </View>
+        <Subheading>{checked ==='range' ? 'First date' : 'Single date'}</Subheading>
         <TextInput
           label="Activity name"
           mode="outlined"
@@ -180,8 +182,9 @@ function ActivityFormTemplate({
           </Button>
         </View>
         {
-          checked == 'range' && (
+          checked === 'range' && (
             <>
+              <Subheading>Second date</Subheading>
               <TextInput
                 editable={false}
                 label="Activity date"
@@ -224,8 +227,13 @@ function ActivityFormTemplate({
       </View>
       <View>
         <Snackbar
+          duration={Snackbar.DURATION_SHORT}
           visible={addActivityNotificationState}
           onDismiss={() => toggleActivityNotification(false)}
+          action={{
+            label: 'Dismiss',
+            onPress: () => toggleActivityNotification(false),
+          }}
         >
           Added an activity
         </Snackbar>
