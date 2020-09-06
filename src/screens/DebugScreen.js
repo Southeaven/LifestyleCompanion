@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
@@ -22,8 +23,10 @@ const styles = StyleSheet.create({
 
 function DebugScreen({ activities, ...props}) {
   const listItems = activities.map((activity) =>  {
-    const activityDate = format(activity.date, 'yyyy/MM/dd, HH:mm');
-    const timeslotDate = format(activity.timeslot, 'yyyy/MM/dd, HH:mm');
+    const firstDate = format(activity.firstDate, 'yyyy/MM/dd, HH:mm');
+    const secondDate = format(activity.secondDate, 'yyyy/MM/dd, HH:mm');
+    const startDate = format(activity.startDate, 'yyyy/MM/dd, HH:mm');
+    const stopDate = format(activity.stopDate, 'yyyy/MM/dd, HH:mm');
 
     return (
       <List.Item
@@ -31,8 +34,10 @@ function DebugScreen({ activities, ...props}) {
         title={activity.activityName}
         description={() => (
           <View>
-            <Text>{activityDate}</Text>
-            <Text>{timeslotDate}</Text>
+            <Text>First date: {firstDate}</Text>
+            <Text>Second date: {secondDate}</Text>
+            <Text>Start date: {startDate}</Text>
+            <Text>Stop date: {stopDate}</Text>
           </View>
         )}
       />
@@ -40,9 +45,9 @@ function DebugScreen({ activities, ...props}) {
   });
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {listItems}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -20,7 +20,10 @@ import {
   setSeconds,
 } from 'date-fns';
 import { setActivityNotification } from '../store/notifications';
-import { addActivity } from '../store/activities';
+import {
+  addActivity,
+  addActivityRange,
+} from '../store/activities';
 
 const styles = StyleSheet.create({
   button: {
@@ -45,51 +48,72 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  // TODO: Remove 'hide' helper
-  hide: {
-    display: 'none',
-  },
 });
 
 function ActivityFormTemplate({
   addOneActivity,
+  addOneActivityRange,
   addActivityNotificationState,
   toggleActivityNotification,
   navigation,
 }) {
-  const [show, setShow] = useState(false);
+  const [showFirst, setShowFirst] = useState(false);
+  const [showSecond, setShowSecond] = useState(false);
   const [mode, setMode] = useState('date');
   const [isError, setIsError] = useState(false);
   const [checked, setChecked] = React.useState('single');
 
   const [activityName, setActivityName] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [firstDate, setFirstDate] = useState(new Date());
+  const [secondDate, setSecondDate] = useState(new Date());
 
   const handleActivityNameChange = (newActivityName) => {
     setIsError(newActivityName === '');
     setActivityName(newActivityName);
   };
 
-  const onChange = (event, selectedDate) => {
-    setShow(false);
+  const onChangeFirst = (event, selectedDate) => {
+    setShowFirst(false);
 
     if (selectedDate) {
       const currentDate = setSeconds(selectedDate, 0) || date;
-      setDate(currentDate);
+      setFirstDate(currentDate);
     }
   };
 
-  const showDatepicker = (event, isDate) => {
+  const onChangeSecond = (event, selectedDate) => {
+    setShowSecond(false);
+
+    if (selectedDate) {
+      const currentDate = setSeconds(selectedDate, 0) || date;
+      setSecondDate(currentDate);
+    }
+  };
+
+  const showFirstDatepicker = (event, isDate) => {
     setMode(isDate ? 'date' : 'time');
-    setShow(true);
+    setShowFirst(true);
+  };
+
+  const showSecondDatepicker = (event, isDate) => {
+    setMode(isDate ? 'date' : 'time');
+    setShowSecond(true);
   };
 
   const handleAddActivity = (event) => {
     if (!isError) {
-      addOneActivity({
-        activityName,
-        date
-      });
+      if (checked === 'single') {
+        addOneActivity({
+          activityName,
+          firstDate,
+        });
+      } else {
+        addOneActivityRange({
+          activityName,
+          firstDate,
+          secondDate,
+        });
+      }
       toggleActivityNotification(true);
     }
   };
@@ -137,49 +161,52 @@ function ActivityFormTemplate({
           editable={false}
           label="Activity date"
           mode="outlined"
-          value={format(date, 'yyyy/MM/dd, HH:mm')}
+          value={format(firstDate, 'yyyy/MM/dd, HH:mm')}
         />
         <View style={styles.buttonRow}>
           <Button
             mode="contained"
-            onPress={e => showDatepicker(e, true)}
+            onPress={e => showFirstDatepicker(e, true)}
             style={[styles.button, styles.buttonInRow, styles.leftButton]}
           >
             Set date
           </Button>
           <Button
             mode="contained"
-            onPress={e => showDatepicker(e, false)}
+            onPress={e => showFirstDatepicker(e, false)}
             style={[styles.button, styles.buttonInRow, styles.rightButton]}
           >
             Set time
           </Button>
         </View>
-        {/* TODO: Hook coode below to second date */}
-        <View style={styles.hide}>
-          <TextInput
-            editable={false}
-            label="Activity date"
-            mode="outlined"
-            value={format(date, 'yyyy/MM/dd, HH:mm')}
-          />
-          <View style={styles.buttonRow}>
-            <Button
-              mode="contained"
-              onPress={e => showDatepicker(e, true)}
-              style={[styles.button, styles.buttonInRow, styles.leftButton]}
-            >
-              Set date
-            </Button>
-            <Button
-              mode="contained"
-              onPress={e => showDatepicker(e, false)}
-              style={[styles.button, styles.buttonInRow, styles.rightButton]}
-            >
-              Set time
-            </Button>
-          </View>
-        </View>
+        {
+          checked == 'range' && (
+            <>
+              <TextInput
+                editable={false}
+                label="Activity date"
+                mode="outlined"
+                value={format(secondDate, 'yyyy/MM/dd, HH:mm')}
+              />
+              <View style={styles.buttonRow}>
+                <Button
+                  mode="contained"
+                  onPress={e => showSecondDatepicker(e, true)}
+                  style={[styles.button, styles.buttonInRow, styles.leftButton]}
+                >
+                  Set date
+                </Button>
+                <Button
+                  mode="contained"
+                  onPress={e => showSecondDatepicker(e, false)}
+                  style={[styles.button, styles.buttonInRow, styles.rightButton]}
+                >
+                  Set time
+                </Button>
+              </View>
+            </>
+          )
+        }
         <Button
           mode="contained"
           style={styles.button}
@@ -204,12 +231,20 @@ function ActivityFormTemplate({
         </Snackbar>
       </View>
       <View>
-        {show && (
+      {showFirst && (
           <DateTimePicker
             display="default"
             mode={mode}
-            onChange={onChange}
-            value={date}
+            onChange={onChangeFirst}
+            value={firstDate}
+          />
+        )}
+        {showSecond && (
+          <DateTimePicker
+            display="default"
+            mode={mode}
+            onChange={onChangeSecond}
+            value={secondDate}
           />
         )}
       </View>
@@ -228,9 +263,12 @@ const mapDispatchToProps = dispatch => {
     addOneActivity: activity => {
       dispatch(addActivity(activity))
     },
+    addOneActivityRange : activity => {
+      dispatch(addActivityRange(activity))
+    },
     toggleActivityNotification: activityState => {
       dispatch(setActivityNotification(activityState))
-    }
+    },
   }
 }
 

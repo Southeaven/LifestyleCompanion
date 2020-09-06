@@ -6,11 +6,19 @@ import {
 } from 'date-fns';
 
 const ADD_ACTIVITY = 'LifestyleCompanion/activities/ADD_ACTIVITY';
+const ADD_ACTIVITY_RANGE = 'LifestyleCompanion/activities/ADD_ACTIVITY_RANGE';
 const REMOVE_ACTIVITY = 'LifestyleCompanion/activities/REMOVE_ACTIVITY';
 
 export function addActivity(payload) {
   return {
     type: ADD_ACTIVITY,
+    payload
+  }
+}
+
+export function addActivityRange(payload) {
+  return {
+    type: ADD_ACTIVITY_RANGE,
     payload
   }
 }
@@ -26,43 +34,36 @@ const dummyState = [
   {
     id: uuid.v4(),
     activityName: 'Eating',
-    date: new Date(2013, 7, 1, 9, 8, 49),
-    timeslot: new Date(2013, 7, 1, 9, 0, 0),
+    firstDate: new Date(2013, 7, 1, 9, 8, 49),
+    secondDate: new Date(2013, 7, 1, 9, 8, 49),
+    startDate: new Date(2013, 7, 1, 9, 0, 0),
+    stopDate: new Date(2013, 7, 1, 9, 14, 59),
   },
   {
     id: uuid.v4(),
     activityName: 'Running',
-    date: new Date(2014, 8, 1, 10, 19, 50),
-    timeslot: new Date(2014, 8, 1, 10, 15, 0),
+    firstDate: new Date(2014, 8, 1, 10, 19, 50),
+    secondDate: new Date(2014, 8, 1, 10, 19, 50),
+    startDate: new Date(2014, 8, 1, 10, 15, 0),
+    stopDate: new Date(2014, 8, 1, 10, 29, 59),
   },
   {
     id: uuid.v4(),
     activityName: 'Swimming',
-    date: new Date(2015, 9, 1, 11, 31, 51),
-    timeslot: new Date(2015, 9, 1, 11, 30, 0),
+    firstDate: new Date(2015, 9, 1, 11, 31, 51),
+    secondDate: new Date(2015, 9, 1, 11, 31, 51),
+    startDate: new Date(2015, 9, 1, 11, 30, 0),
+    stopDate: new Date(2015, 9, 1, 11, 44, 59),
   },
   {
     id: uuid.v4(),
     activityName: 'Reading',
-    date: new Date(2016, 10, 3, 12, 47, 52),
-    timeslot: new Date(2016, 10, 3, 12, 45, 0),
+    firstDate: new Date(2016, 10, 3, 12, 47, 52),
+    secondDate: new Date(2016, 10, 3, 12, 47, 52),
+    startDate: new Date(2016, 10, 3, 12, 45, 0),
+    stopDate: new Date(2016, 10, 3, 12, 59, 59),
   }
 ];
-
-function processSingleDate(date) {
-  const minutes = getMinutes(date);
-  let closestMinutes = 0;
-
-  if (minutes > 45) {
-    closestMinutes = 45;
-  } else if (minutes > 30) {
-    closestMinutes = 30;
-  } else if (minutes > 15) {
-    closestMinutes = 15;
-  }
-
-  return setSeconds(setMinutes(new Date(date), closestMinutes), 0);
-}
 
 function processPairOfDates(date1, date2) {
   const minutesDate1 = getMinutes(date1);
@@ -92,16 +93,30 @@ function processPairOfDates(date1, date2) {
   }
 }
 
+function prepareActionPayload(payload, isSingle) {
+  const { startDate, stopDate } = processPairOfDates(payload.firstDate, isSingle ? payload.firstDate : payload.secondDate);
+
+  return {
+    id: uuid.v4(),
+    activityName: payload.activityName,
+    firstDate: payload.firstDate,
+    secondDate: isSingle ? payload.firstDate : payload.secondDate,
+    startDate,
+    stopDate,
+  };
+}
+
 export default function activities(state = dummyState, action) {
   switch(action.type) {
     case ADD_ACTIVITY:
       return [
         ...state,
-        {
-          ...action.payload,
-          id: uuid.v4(),
-          timeslot: processSingleDate(action.payload.date)
-        }
+        prepareActionPayload(action.payload, true),
+      ]
+    case ADD_ACTIVITY_RANGE:
+      return [
+        ...state,
+        prepareActionPayload(action.payload, false),
       ]
     case REMOVE_ACTIVITY:
       return [
