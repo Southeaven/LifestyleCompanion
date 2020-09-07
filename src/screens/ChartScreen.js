@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Dimensions,
   StyleSheet,
   View,
 } from 'react-native';
@@ -14,10 +15,14 @@ const styles = StyleSheet.create({
 
 
 function ChartScreen({ activities, ...props }) {
+  const deviceWidth = Dimensions.get('window').width;
+
   return (
     <View style={styles.container}>
       <VictoryPie
         data={activities}
+        padding={100}
+        width={deviceWidth}
       />
     </View>
   );

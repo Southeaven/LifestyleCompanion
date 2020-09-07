@@ -34,6 +34,7 @@ function DebugScreen({ activities, ...props}) {
             <Text>Second date: {secondDate}</Text>
             <Text>Start date: {startDate}</Text>
             <Text>Stop date: {stopDate}</Text>
+            <Text>Units: {activity.units}</Text>
           </View>
         )}
       />

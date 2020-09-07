@@ -1,5 +1,7 @@
 import uuid from 'react-native-uuid';
 import {
+  addSeconds,
+  differenceInMinutes,
   getMinutes,
   setMinutes,
   setSeconds,
@@ -38,6 +40,7 @@ const dummyState = [
     secondDate: new Date(2013, 7, 1, 9, 8, 49),
     startDate: new Date(2013, 7, 1, 9, 0, 0),
     stopDate: new Date(2013, 7, 1, 9, 14, 59),
+    units: 1,
   },
   {
     id: uuid.v4(),
@@ -46,6 +49,7 @@ const dummyState = [
     secondDate: new Date(2014, 8, 1, 10, 19, 50),
     startDate: new Date(2014, 8, 1, 10, 15, 0),
     stopDate: new Date(2014, 8, 1, 10, 29, 59),
+    units: 1,
   },
   {
     id: uuid.v4(),
@@ -54,6 +58,7 @@ const dummyState = [
     secondDate: new Date(2015, 9, 1, 11, 31, 51),
     startDate: new Date(2015, 9, 1, 11, 30, 0),
     stopDate: new Date(2015, 9, 1, 11, 44, 59),
+    units: 1,
   },
   {
     id: uuid.v4(),
@@ -62,6 +67,7 @@ const dummyState = [
     secondDate: new Date(2016, 10, 3, 12, 47, 52),
     startDate: new Date(2016, 10, 3, 12, 45, 0),
     stopDate: new Date(2016, 10, 3, 12, 59, 59),
+    units: 1,
   }
 ];
 
@@ -87,14 +93,21 @@ function processPairOfDates(date1, date2) {
     farthestMinutes = 29;
   }
 
+  const startDate = setSeconds(setMinutes(new Date(date1), closestMinutes), 0);
+  const stopDate = setSeconds(setMinutes(new Date(date2), farthestMinutes), 59);
+
+  const oneSecondMore = addSeconds(stopDate, 1);
+  const difference = Math.round(differenceInMinutes(oneSecondMore, startDate) / 15);
+
   return {
-    startDate: setSeconds(setMinutes(new Date(date1), closestMinutes), 0),
-    stopDate: setSeconds(setMinutes(new Date(date2), farthestMinutes), 59),
+    startDate,
+    stopDate,
+    units: difference,
   }
 }
 
 function prepareActionPayload(payload, isSingle) {
-  const { startDate, stopDate } = processPairOfDates(payload.firstDate, isSingle ? payload.firstDate : payload.secondDate);
+  const { startDate, stopDate, units } = processPairOfDates(payload.firstDate, isSingle ? payload.firstDate : payload.secondDate);
 
   return {
     id: uuid.v4(),
@@ -103,6 +116,7 @@ function prepareActionPayload(payload, isSingle) {
     secondDate: isSingle ? payload.firstDate : payload.secondDate,
     startDate,
     stopDate,
+    units,
   };
 }
 
