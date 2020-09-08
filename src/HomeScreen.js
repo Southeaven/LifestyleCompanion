@@ -4,7 +4,7 @@ import Header from './Header';
 import WelcomeScreen from './screens/WelcomeScreen';
 import ActivityForm from './screens/ActivityForm';
 import LocationComponent from './screens/LocationComponent';
-import ChartScreen from './screens/ChartScreen';
+import StatisticsScreen from './screens/StatisticsScreen';
 import DebugScreen from './screens/DebugScreen';
 
 const Stack = createStackNavigator();
@@ -19,7 +19,7 @@ function HomeScreen() {
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <Stack.Screen name="ActivityForm" component={ActivityForm} />
       <Stack.Screen name="LocationComponent" component={LocationComponent} />
-      <Stack.Screen name="ChartScreen" component={ChartScreen} />
+      <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} />
       <Stack.Screen name="DebugScreen" component={DebugScreen} />
     </Stack.Navigator>
   );

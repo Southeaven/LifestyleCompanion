@@ -21,8 +21,8 @@ function DrawerContent({ navigation, ...props}) {
             onPress={() => navigation.navigate('LocationComponent')}
           />
           <DrawerItem
-            label="Chart screen"
-            onPress={() => navigation.navigate('ChartScreen')}
+            label="Statistics screen"
+            onPress={() => navigation.navigate('StatisticsScreen')}
           />
           <DrawerItem
             label="DEBUG SCREEN"

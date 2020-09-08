@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 
-function ChartScreen({ activities, ...props }) {
+function StatisticsScreen({ activities, ...props }) {
   const deviceWidth = Dimensions.get('window').width;
 
   return (
@@ -48,4 +48,4 @@ const mapStateToProps = state => {
   return { activities: reducedActivitiesArray };
 };
 
-export default connect(mapStateToProps)(ChartScreen);
+export default connect(mapStateToProps)(StatisticsScreen);
