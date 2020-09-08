@@ -1,26 +1,41 @@
-import React, { useState, useEffect }  from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import * as Location from 'expo-location';
 import SimpleMap from './SimpleMap';
-import {Button, Paragraph, Dialog, Portal, HelperText, Subheading, TextInput} from 'react-native-paper';
+import {
+  Button,
+  Dialog,
+  HelperText,
+  Paragraph,
+  Portal,
+  Subheading,
+  TextInput,
+} from 'react-native-paper';
 
-const CONTROL_STATE = {NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3};
+const CONTROL_STATE = { NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3 };
 
 const styles = StyleSheet.create({
   button: {
     width: '100%',
   },
   container: {
-    width: '100%', 
+    width: '100%',
     flexDirection: 'column'
   },
   containerButtons: {
-    width: '100%', 
+    width: '100%',
     flexDirection: 'row',
     height: 50
   },
   containerButton: {
-    width: '46%', 
+    width: '46%',
     margin: '2%'
   }
 });
@@ -28,7 +43,7 @@ const styles = StyleSheet.create({
 
 function drawButtons(state, setControlState) {
   if (state == CONTROL_STATE.NONE) {
-    return(   
+    return (
       <View style={styles.containerButtons}>
         <View style={styles.containerButton}>
           <Button
@@ -46,28 +61,28 @@ function drawButtons(state, setControlState) {
             style={styles.button}
           >
             Remove Location
-          </Button>  
+          </Button>
         </View>
       </View>
     )
 
-  }else if (state == CONTROL_STATE.ADD || state == CONTROL_STATE.ADDING_FORM){
-    return(    
+  } else if (state == CONTROL_STATE.ADD || state == CONTROL_STATE.ADDING_FORM) {
+    return (
       <View style={styles.containerButtons}>
-        <Text style={{margin:15}}>Przytrzymaj palec na lokalizacji aby ją dodać!</Text>
+        <Text style={{ margin: 15 }}>Przytrzymaj palec na lokalizacji aby ją dodać!</Text>
       </View>
     )
 
-  }else if (state == CONTROL_STATE.REMOVE){
-    return(    
+  } else if (state == CONTROL_STATE.REMOVE) {
+    return (
       <View style={styles.containerButtons}>
-        <Text style={{margin:15}}>Przytrzymaj palec na lokalizacji aby ją usunąć.</Text>
+        <Text style={{ margin: 15 }}>Przytrzymaj palec na lokalizacji aby ją usunąć.</Text>
       </View>
     )
   }
 }
 
-function confirmAdding(activityName, range, cords){
+function confirmAdding(activityName, range, cords) {
 }
 
 
@@ -78,7 +93,6 @@ function LocationComponent() {
   const [activityName, setActivityName] = useState(null);
   const [range, setRange] = useState(20);
   const [cords, setCords] = useState(null);
-  
 
   useEffect(() => {
     (async () => {
@@ -101,33 +115,33 @@ function LocationComponent() {
   }
 
   return (
-      <View style={styles.container}>
-        {drawButtons(controlState, setControlState)}
-        <Portal>
-          <Dialog visible={controlState == CONTROL_STATE.ADDING_FORM} onDismiss={() => setControlState(CONTROL_STATE.NONE)}>
-            <Dialog.Title>Adding location</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph></Paragraph>
-              <TextInput
-                keyboardType = 'numeric'
-                label="Range [meters]"
-                mode="outlined"
-                onChangeText={(text) => setActivityName(text)}
-              />
-              <TextInput
-                label="Activity name"
-                mode="outlined"
-                onChangeText={(text) => setRange(text)}
-              />
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={() => {setControlState(CONTROL_STATE.NONE); confirmAdding(activityName, range, cords)}}>Done</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
-        <SimpleMap onLongPress={ (cords) => {setCords(cords); if(controlState==CONTROL_STATE.REMOVE) setControlState(CONTROL_STATE.NONE); else if(controlState==CONTROL_STATE.ADD) setControlState(CONTROL_STATE.ADDING_FORM)} }></SimpleMap>
-        <Text>{text}</Text>
-      </View>
+    <View style={styles.container}>
+      {drawButtons(controlState, setControlState)}
+      <Portal>
+        <Dialog visible={controlState == CONTROL_STATE.ADDING_FORM} onDismiss={() => setControlState(CONTROL_STATE.NONE)}>
+          <Dialog.Title>Adding location</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph></Paragraph>
+            <TextInput
+              keyboardType='numeric'
+              label="Range [meters]"
+              mode="outlined"
+              onChangeText={(text) => setActivityName(text)}
+            />
+            <TextInput
+              label="Activity name"
+              mode="outlined"
+              onChangeText={(text) => setRange(text)}
+            />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => { setControlState(CONTROL_STATE.NONE); confirmAdding(activityName, range, cords) }}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <SimpleMap onLongPress={(cords) => { setCords(cords); if (controlState == CONTROL_STATE.REMOVE) setControlState(CONTROL_STATE.NONE); else if (controlState == CONTROL_STATE.ADD) setControlState(CONTROL_STATE.ADDING_FORM) }}></SimpleMap>
+      <Text>{text}</Text>
+    </View>
   );
 }
 

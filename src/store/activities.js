@@ -6,6 +6,7 @@ import {
   setMinutes,
   setSeconds,
 } from 'date-fns';
+import { RESET_STORE } from './debug';
 
 const ADD_ACTIVITY = 'LifestyleCompanion/activities/ADD_ACTIVITY';
 const ADD_ACTIVITY_RANGE = 'LifestyleCompanion/activities/ADD_ACTIVITY_RANGE';
@@ -120,23 +121,25 @@ function prepareActionPayload(payload, isSingle) {
   };
 }
 
-export default function activities(state = dummyState, action) {
+export default function activities(state = [], action) {
   switch(action.type) {
     case ADD_ACTIVITY:
       return [
         ...state,
         prepareActionPayload(action.payload, true),
-      ]
+      ];
     case ADD_ACTIVITY_RANGE:
       return [
         ...state,
         prepareActionPayload(action.payload, false),
-      ]
+      ];
     case REMOVE_ACTIVITY:
       return [
         ...state.slice(0, action.payload),
         ...state.slice(action.payload + 1)
-      ]
+      ];
+    case RESET_STORE:
+      return [];
     default:
       return state;
   }

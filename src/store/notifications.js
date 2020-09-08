@@ -1,3 +1,5 @@
+import { RESET_STORE } from './debug';
+
 const SET_ACTIVITY_NOTIFICATION = 'LifestyleCompanion/notifications/SET_ACTIVITY_NOTIFICATION';
 
 export function setActivityNotification(payload) {
@@ -18,6 +20,8 @@ export default function notifications(state = dummyState, action) {
         ...state,
         addActivity: action.payload
       }
+    case RESET_STORE:
+      return dummyState;
     default:
       return state;
   }
