@@ -12,7 +12,12 @@ export default function SimpleMap(props){
         longitudeDelta: 0.0421,}}
         showsUserLocation = {true}
         onLongPress = {(e) => {props.onLongPress(e.nativeEvent.coordinate)}}
-    />
+    >
+      {props.markers.map((marker) => (
+        <MapView.Marker coordinate={{longitude: marker.longitude, latitude: marker.latitude}} title={marker.activity}/>
+      ))}
+    </MapView>
+
   );
 }
 

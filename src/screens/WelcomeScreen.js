@@ -38,7 +38,7 @@ function WelcomeScreen({ navigation, ...props}) {
         onPress={() => navigation.navigate('LocationComponent')}
         style={styles.button}
       >
-        Record location (NOT IMPLEMENTED YET)
+        Manage locations
       </Button>
     </View>
   );
