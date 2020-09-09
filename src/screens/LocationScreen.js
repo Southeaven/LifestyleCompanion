@@ -21,6 +21,7 @@ import {
   removeLocation,
 } from '../store/locations';
 import { pow } from 'react-native-reanimated';
+import startLocalizationTasks from '../Localization'
 
 const CONTROL_STATE = { NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3 };
 
@@ -122,6 +123,12 @@ function LocationComponent({ locations, addLocationX, removeLocationX }) {
   const [locationToRemove, setLocationToRemove] = useState({ activity: "NONE" });
   const [range, setRange] = useState(20);
   const [cords, setCords] = useState(null);
+  const [state, setState] = useState(false);
+
+  if(!state){
+    startLocalizationTasks()
+    setState(true)
+  }
 
   useEffect(() => {
     (async () => {

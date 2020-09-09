@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Header from './Header';
 import WelcomeScreen from './screens/WelcomeScreen';
 import ActivityForm from './screens/ActivityForm';
-import LocationComponent from './screens/LocationComponent';
+import LocationComponent from './screens/LocationScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 import DebugScreen from './screens/DebugScreen';
 

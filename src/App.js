@@ -8,7 +8,7 @@ import Main from './Main';
 import todoApp from './store';
 import createStore from './store';
 
-const { store, persistor } = createStore()
+export const { store, persistor } = createStore()
 
 function App() {
   return (

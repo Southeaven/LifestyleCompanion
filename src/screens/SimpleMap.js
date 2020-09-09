@@ -18,7 +18,10 @@ export default function SimpleMap(props) {
       onLongPress={(e) => { props.onLongPress(e.nativeEvent.coordinate) }}
     >
       {props.markers.map((marker) => (
-        <MapView.Marker coordinate={{ longitude: marker.longitude, latitude: marker.latitude }} title={marker.activity} />
+        <MapView.Marker coordinate={{longitude: marker.longitude, latitude: marker.latitude}} title={marker.activity}/>
+      ))}
+      {props.markers.map((marker) => (
+        <MapView.Circle center={{longitude: marker.longitude, latitude: marker.latitude}} radius={parseInt(marker.range)} strokeColor = 'rgba(50, 50, 255, 0.5)' fillColor = 'rgba(150, 150, 255, 0.3)' strokeWidth = {4}/>
       ))}
     </MapView>
 
