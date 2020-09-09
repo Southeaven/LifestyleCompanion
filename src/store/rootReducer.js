@@ -6,5 +6,5 @@ import locations from './locations';
 export default combineReducers({
   activities,
   notifications,
-  locations
+  locations,
 });

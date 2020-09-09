@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
   },
 });
 
-function DebugScreen({ activities, resetData, ...props}) {
-  const listItems = activities.map((activity) =>  {
+function DebugScreen({ activities, resetData, ...props }) {
+  const listItems = activities.map((activity) => {
     const firstDate = format(new Date(activity.firstDate), 'yyyy/MM/dd, HH:mm');
     const secondDate = format(new Date(activity.secondDate), 'yyyy/MM/dd, HH:mm');
     const startDate = format(new Date(activity.startDate), 'yyyy/MM/dd, HH:mm');

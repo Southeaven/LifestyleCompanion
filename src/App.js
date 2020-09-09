@@ -1,5 +1,5 @@
 import { registerRootComponent } from 'expo';
-import React  from 'react';;
+import React from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/integration/react';

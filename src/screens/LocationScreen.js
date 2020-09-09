@@ -1,10 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import * as Location from 'expo-location';
 import SimpleMap from './SimpleMap';
-import { Button, Dialog, HelperText, Paragraph, Portal, Subheading, TextInput } from 'react-native-paper';
+import { Button,
+  Dialog,
+  Paragraph,
+  Portal,
+  TextInput,
+} from 'react-native-paper';
 import { connect } from 'react-redux';
-import { addLocation, removeLocation } from '../store/locations';
+import {
+  addLocation,
+  removeLocation,
+} from '../store/locations';
 import { pow } from 'react-native-reanimated';
 
 const CONTROL_STATE = { NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3 };
@@ -28,14 +43,14 @@ const styles = StyleSheet.create({
   }
 });
 
-function getNearestLocation(locations, location){
+function getNearestLocation(locations, location) {
   let locationToRemove = null;
-  for(let i=0; i<locations.length; i++){
-    if(locationToRemove == null){
+  for (let i = 0; i < locations.length; i++) {
+    if (locationToRemove == null) {
       locationToRemove = locations[i]
-    }else{
-      if (Math.sqrt(Math.pow((locations[i].latitude - location.latitude), 2) + Math.pow((locations[i].longitude - location.longitude), 2) ) <
-      (Math.sqrt(Math.pow((locations[i].latitude - locationToRemove.latitude), 2) + Math.pow((locations[i].longitude - locationToRemove.longitude), 2)))){
+    } else {
+      if (Math.sqrt(Math.pow((locations[i].latitude - location.latitude), 2) + Math.pow((locations[i].longitude - location.longitude), 2)) <
+        (Math.sqrt(Math.pow((locations[i].latitude - locationToRemove.latitude), 2) + Math.pow((locations[i].longitude - locationToRemove.longitude), 2)))) {
         locationToRemove = locations[i]
       }
     }
@@ -94,17 +109,17 @@ function confirmAdding(activityName, range, cords, addLocationX) {
   })
 }
 
-function confirmRemoving(location, removeLocationX){
+function confirmRemoving(location, removeLocationX) {
   removeLocationX(location)
 }
 
 
-function LocationComponent({locations, addLocationX, removeLocationX}) {
+function LocationComponent({ locations, addLocationX, removeLocationX }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [controlState, setControlState] = useState(CONTROL_STATE.NONE);
   const [activityName, setActivityName] = useState(null);
-  const [locationToRemove, setLocationToRemove] = useState({activity: "NONE"});
+  const [locationToRemove, setLocationToRemove] = useState({ activity: "NONE" });
   const [range, setRange] = useState(20);
   const [cords, setCords] = useState(null);
 
@@ -162,13 +177,14 @@ function LocationComponent({locations, addLocationX, removeLocationX}) {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-      <SimpleMap markers={locations} onLongPress={(cords) => { 
-        setCords(cords); 
+      <SimpleMap markers={locations} onLongPress={(cords) => {
+        setCords(cords);
         if (controlState == CONTROL_STATE.REMOVE) {
           setControlState(CONTROL_STATE.REMOVING_FORM)
           setLocationToRemove(getNearestLocation(locations, cords))
-        } else if (controlState == CONTROL_STATE.ADD) 
-          setControlState(CONTROL_STATE.ADDING_FORM) }}>
+        } else if (controlState == CONTROL_STATE.ADD)
+          setControlState(CONTROL_STATE.ADDING_FORM)
+      }}>
       </SimpleMap>
       <Text>{text}</Text>
     </View>

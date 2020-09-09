@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { DrawerItem, DrawerContentScrollView } from '@react-navigation/drawer';
 import { Drawer } from 'react-native-paper';
 
-function DrawerContent({ navigation, ...props}) {
+function DrawerContent({ navigation, ...props }) {
   return (
     <DrawerContentScrollView {...props}>
       <View>

@@ -122,7 +122,7 @@ function prepareActionPayload(payload, isSingle) {
 }
 
 export default function activities(state = [], action) {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_ACTIVITY:
       return [
         ...state,

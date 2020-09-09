@@ -20,6 +20,7 @@ function StatisticsScreen({ activities, ...props }) {
   return (
     <View style={styles.container}>
       <VictoryPie
+        colorScale="qualitative"
         data={activities}
         padding={100}
         width={deviceWidth}

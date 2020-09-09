@@ -142,13 +142,13 @@ function ActivityFormTemplate({
                 <RadioButton.Android
                   value="range"
                   status={checked === 'range' ? 'checked' : 'unchecked'}
-                  />
+                />
               </View>
               <Text>Range</Text>
             </View>
           </TouchableRipple>
         </View>
-        <Subheading>{checked ==='range' ? 'First date' : 'Single date'}</Subheading>
+        <Subheading>{checked === 'range' ? 'First date' : 'Single date'}</Subheading>
         <TextInput
           label="Activity name"
           mode="outlined"
@@ -239,7 +239,7 @@ function ActivityFormTemplate({
         </Snackbar>
       </View>
       <View>
-      {showFirst && (
+        {showFirst && (
           <DateTimePicker
             display="default"
             mode={mode}
@@ -271,7 +271,7 @@ const mapDispatchToProps = dispatch => {
     addOneActivity: activity => {
       dispatch(addActivity(activity))
     },
-    addOneActivityRange : activity => {
+    addOneActivityRange: activity => {
       dispatch(addActivityRange(activity))
     },
     toggleActivityNotification: activityState => {

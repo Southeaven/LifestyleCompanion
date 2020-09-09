@@ -14,7 +14,7 @@ const dummyState = {
 };
 
 export default function notifications(state = dummyState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case SET_ACTIVITY_NOTIFICATION:
       return {
         ...state,

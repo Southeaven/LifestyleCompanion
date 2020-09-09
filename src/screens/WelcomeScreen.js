@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function WelcomeScreen({ navigation, ...props}) {
+function WelcomeScreen({ navigation, ...props }) {
   return (
     <View style={styles.container}>
       <Title>Welcome to the Lifestyle Companion</Title>

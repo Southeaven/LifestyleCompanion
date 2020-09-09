@@ -39,7 +39,7 @@ function prepareActionPayload(payload) {
 }
 
 export default function locations(state = dummyState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_LOCATION:
       return [
         ...state,
