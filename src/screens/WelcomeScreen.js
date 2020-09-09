@@ -35,7 +35,7 @@ function WelcomeScreen({ navigation, ...props }) {
       </Button>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('LocationComponent')}
+        onPress={() => navigation.navigate('LocationScreen')}
         style={styles.button}
       >
         Manage locations

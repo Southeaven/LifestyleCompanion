@@ -38,10 +38,10 @@ const dummyState = [
     id: uuid.v4(),
     activityName: 'Eating',
     firstDate: new Date(2013, 7, 1, 9, 8, 49),
-    secondDate: new Date(2013, 7, 1, 9, 8, 49),
+    secondDate: new Date(2013, 7, 1, 9, 28, 49),
     startDate: new Date(2013, 7, 1, 9, 0, 0),
-    stopDate: new Date(2013, 7, 1, 9, 14, 59),
-    units: 1,
+    stopDate: new Date(2013, 7, 1, 9, 29, 59),
+    units: 2,
   },
   {
     id: uuid.v4(),
@@ -55,11 +55,11 @@ const dummyState = [
   {
     id: uuid.v4(),
     activityName: 'Swimming',
-    firstDate: new Date(2015, 9, 1, 11, 31, 51),
+    firstDate: new Date(2015, 9, 1, 10, 31, 51),
     secondDate: new Date(2015, 9, 1, 11, 31, 51),
-    startDate: new Date(2015, 9, 1, 11, 30, 0),
+    startDate: new Date(2015, 9, 1, 10, 30, 0),
     stopDate: new Date(2015, 9, 1, 11, 44, 59),
-    units: 1,
+    units: 5,
   },
   {
     id: uuid.v4(),

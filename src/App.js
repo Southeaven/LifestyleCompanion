@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import Main from './Main';
-import todoApp from './store';
 import createStore from './store';
 
 export const { store, persistor } = createStore()

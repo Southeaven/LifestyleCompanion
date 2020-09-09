@@ -114,8 +114,7 @@ function confirmRemoving(location, removeLocationX) {
   removeLocationX(location)
 }
 
-
-function LocationComponent({ locations, addLocationX, removeLocationX }) {
+function LocationScreen({ locations, addLocationX, removeLocationX }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [controlState, setControlState] = useState(CONTROL_STATE.NONE);
@@ -215,4 +214,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocationComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(LocationScreen);
