@@ -9,7 +9,8 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import SimpleMap from './SimpleMap';
-import { Button,
+import {
+  Button,
   Dialog,
   Paragraph,
   Portal,
@@ -124,7 +125,7 @@ function LocationScreen({ locations, addLocationX, removeLocationX }) {
   const [cords, setCords] = useState(null);
   const [state, setState] = useState(false);
 
-  if(!state){
+  if (!state) {
     startLocalizationTasks()
     setState(true)
   }
@@ -160,7 +161,7 @@ function LocationScreen({ locations, addLocationX, removeLocationX }) {
               keyboardType='numeric'
               label="Range [meters]"
               mode="outlined"
-              onChangeText={(text) => setRange(text)}
+              onChangeText={(text) => setRange(Number(text))}
             />
             <TextInput
               label="Activity name"
