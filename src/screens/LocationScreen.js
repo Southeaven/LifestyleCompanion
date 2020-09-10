@@ -125,10 +125,7 @@ function LocationScreen({ locations, addLocationX, removeLocationX }) {
   const [cords, setCords] = useState(null);
   const [state, setState] = useState(false);
 
-  if (!state) {
-    startLocalizationTasks()
-    setState(true)
-  }
+  startLocalizationTasks()
 
   useEffect(() => {
     (async () => {
