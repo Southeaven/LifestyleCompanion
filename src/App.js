@@ -53,7 +53,6 @@ export async function startLocalizationTasks() {
   await Location.startLocationUpdatesAsync('geoTask', {
     accuracy: Location.Accuracy.Highest
   })
-  
 }
 
 function App() {

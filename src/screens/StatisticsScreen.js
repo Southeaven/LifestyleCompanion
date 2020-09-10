@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Button,
   Dimensions,
   ScrollView,
   StyleSheet,
@@ -8,7 +7,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
+  Button,
   DataTable,
+  Dialog,
+  List,
+  Portal,
   Subheading,
   Text,
 } from 'react-native-paper';
@@ -19,33 +22,65 @@ const styles = StyleSheet.create({
   container: {
     margin: 10
   },
+  marginTop: {
+    marginTop: 5
+  },
 });
 
 const CUTOFF_POINT = 0.05;
 
+function ActivityModal({ visible, onDismiss, activity }) {
+  const startDate = format(new Date(activity.startDate), 'yyyy/MM/dd');
+  const startTime = format(new Date(activity.startDate), 'HH:mm');
+  const stopDate = format(new Date(activity.stopDate), 'yyyy/MM/dd');
+  const stopTime = format(new Date(activity.stopDate), 'HH:mm');
+
+  return (
+    <Dialog visible={visible} onDismiss={onDismiss}>
+      <Dialog.Title>Activity details</Dialog.Title>
+      <Dialog.Content>
+        <List.Item title="Start date" description={startDate} />
+        <List.Item title="Start time" description={startTime} />
+        <List.Item title="Stop date" description={stopDate} />
+        <List.Item title="Stop time" description={stopTime} />
+      </Dialog.Content>
+      <Dialog.Actions>
+        <Button onPress={() => (console.log('Boink'))}>Delete (NOT WORKING YET)</Button>
+        <Button onPress={onDismiss}>Close</Button>
+      </Dialog.Actions>
+    </Dialog>
+  );
+}
+
 function StatisticsScreen({ activities, rawActivities, ...props }) {
   const deviceWidth = Dimensions.get('window').width;
 
+  const [showModal, setShowModal] = useState(false);
+  const [activityData, setActivityData] = useState(null);
+
   const listItems = rawActivities.map((rawActivity) => {
-    // const startDate = format(new Date(rawActivity.startDate), 'yyyy/MM/dd');
-    // const startTime = format(new Date(rawActivity.startDate), 'HH:mm');
-    // const stopDate = format(new Date(rawActivity.stopDate), 'yyyy/MM/dd');
-    // const stopTime = format(new Date(rawActivity.stopDate), 'HH:mm');
+    const handleShowModal = (singleActivity) => {
+      setActivityData(singleActivity);
+      setShowModal(true);
+    };
 
     return (
       <DataTable.Row
         key={rawActivity.id}
       >
-          <DataTable.Cell>{rawActivity.activityName}</DataTable.Cell>
-          <DataTable.Cell>
-            <Text>{rawActivity.units * 15} min</Text>
-          </DataTable.Cell>
-          <View>
-            <Button
-              title="View more"
-              // onPress={}
-            />
-          </View>
+        <DataTable.Cell>{rawActivity.activityName}</DataTable.Cell>
+        <DataTable.Cell>
+          <Text>{rawActivity.units * 15} min</Text>
+        </DataTable.Cell>
+        <View>
+          <Button
+            mode="contained"
+            onPress={() => handleShowModal(rawActivity)}
+            style={styles.marginTop}
+          >
+            View more
+          </Button>
+        </View>
       </DataTable.Row>
     );
   });
@@ -68,6 +103,11 @@ function StatisticsScreen({ activities, rawActivities, ...props }) {
         padding={100}
         width={deviceWidth}
       />
+      {activityData !== null && (
+        <Portal>
+          <ActivityModal visible={showModal} onDismiss={() => setShowModal(false)} activity={activityData} />
+        </Portal>
+      )}
     </ScrollView>
   );
 }
@@ -92,7 +132,7 @@ const mapStateToProps = state => {
   reducedActivitiesArray.sort((a, b) => a.y > b.y);
 
   let otherElements = 0;
-  if (reducedActivitiesArray[0].y / totalSum < CUTOFF_POINT) {
+  if (reducedActivitiesArray.length && reducedActivitiesArray[0].y / totalSum < CUTOFF_POINT) {
     otherElements = reducedActivitiesArray.shift().y;
 
     while (otherElements / totalSum < CUTOFF_POINT) {
