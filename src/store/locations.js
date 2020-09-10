@@ -5,6 +5,8 @@ const REMOVE_LOCATION = 'LifestyleCompanion/locations/REMOVE_LOCATION';
 const ACTIVATE_LOCATION = 'LifestyleCompanion/locations/ACTIVATE_LOCATION';
 const DEACTIVATE_LOCATION = 'LifestyleCompanion/locations/DEACTIVATE_LOCATION';
 import { RESET_STORE } from './debug';
+import { store } from '../App'
+import { addActivityRange } from './activities'
 
 export function addLocation(payload) {
   return {
@@ -34,33 +36,25 @@ export function deactivateLocation(id) {
   }
 }
 
-const dummyState = [
-  {
-    id: uuid.v4(),
-    longitude: 18.566,
-    latitude: 12.152,
-    range: 20,
-    activity: "Activity",
-    active: false
-  }
-];
-
 function prepareActionPayload(payload) {
   return {
     id: uuid.v4(),
     longitude: payload.longitude,
     latitude: payload.latitude,
     range: payload.range,
-    activity: payload.activity
+    activity: payload.activity,
+    active: false,
+    activationDate: null
   };
 }
 
-export default function locations(state = dummyState, action) {
+
+export default function locations(state = [], action) {
   switch (action.type) {
     case ADD_LOCATION:
       return [
         ...state,
-        prepareActionPayload(action.payload, true),
+        prepareActionPayload(action.payload),
       ];
     case REMOVE_LOCATION:
       return [
@@ -69,14 +63,21 @@ export default function locations(state = dummyState, action) {
       ];
     case ACTIVATE_LOCATION:
       for (let i=0; i<state.length; i++){
-        if (state[i].id == state[i].id)
+        if (state[i].id === action.id){
           state[i].active = true
+          state[i].activationDate = new Date()
+        }
       }
       return state;
     case DEACTIVATE_LOCATION:
       for (let i=0; i<state.length; i++){
-        if (state[i].id == state[i].id)
+        if (state[i].id === action.id)
           state[i].active = false
+          store.dispatch(addActivityRange({
+            activityName: state[i].activity,
+            firstDate: state[i].activationDate,
+            secondDate: new Date()
+          }))
       }
       return state;
     case RESET_STORE:

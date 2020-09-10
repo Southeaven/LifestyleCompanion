@@ -22,7 +22,7 @@ import {
   removeLocation,
 } from '../store/locations';
 import { pow } from 'react-native-reanimated';
-import startLocalizationTasks from '../Localization'
+import {startLocalizationTasks} from '../App'
 
 const CONTROL_STATE = { NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3 };
 
@@ -125,8 +125,7 @@ function LocationScreen({ locations, addLocationX, removeLocationX }) {
   const [cords, setCords] = useState(null);
   const [state, setState] = useState(false);
 
-  startLocalizationTasks()
-
+  //startLocalizationTasks()
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestPermissionsAsync();
