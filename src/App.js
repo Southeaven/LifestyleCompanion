@@ -11,6 +11,7 @@ import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import {getDistance} from 'geolib'
 import {activateLocation, deactivateLocation} from './store/locations'
+import { addActivityRange } from './store/activities'
 
 TaskManager.defineTask('geoTask', ({ data: { locations }, error }) => {
   const definedLocations = store.getState().locations;
@@ -28,9 +29,15 @@ TaskManager.defineTask('geoTask', ({ data: { locations }, error }) => {
       store.dispatch(activateLocation(location.id))
     }else if (!(( distance < location.range) && (locations[0].coords.accuracy < location.range*2)) && location.active){
       store.dispatch(deactivateLocation(location.id))
+      store.dispatch(addActivityRange({
+        activityName: location.activity,
+        firstDate: location.activationDate,
+        secondDate: new Date()
+      }))
+      console.log(store.getState().activities)
+      }
     }
-  })
-
+  )
 });
 
 
@@ -53,6 +60,7 @@ export async function startLocalizationTasks() {
   await Location.startLocationUpdatesAsync('geoTask', {
     accuracy: Location.Accuracy.Highest
   })
+  
 }
 
 function App() {
