@@ -70,14 +70,23 @@ export default function locations(state = [], action) {
       }
       return state;
     case DEACTIVATE_LOCATION:
+      console.log(store.getState().activities)
       for (let i=0; i<state.length; i++){
-        if (state[i].id === action.id)
-          state[i].active = false
-          store.dispatch(addActivityRange({
-            activityName: state[i].activity,
-            firstDate: state[i].activationDate,
-            secondDate: new Date()
-          }))
+        if (state[i].id === action.id){
+          if(state[i].active){
+            state[i].active = false
+            store.dispatch(addActivityRange({
+              activityName: state[i].activity,
+              firstDate: state[i].activationDate,
+              secondDate: new Date()
+            }))
+            console.log({
+              activityName: state[i].activity,
+              firstDate: state[i].activationDate,
+              secondDate: new Date()
+            })
+          }
+        }
       }
       return state;
     case RESET_STORE:

@@ -26,7 +26,7 @@ TaskManager.defineTask('geoTask', ({ data: { locations }, error }) => {
       )
     if ((( distance < location.range) && (locations[0].coords.accuracy < location.range*2)) && !location.active){
       store.dispatch(activateLocation(location.id))
-    }else if (!( distance < location.range) && (locations[0].coords.accuracy < location.range*2) && location.active){
+    }else if (!(( distance < location.range) && (locations[0].coords.accuracy < location.range*2)) && location.active){
       store.dispatch(deactivateLocation(location.id))
     }
   })
