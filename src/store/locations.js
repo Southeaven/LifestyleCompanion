@@ -8,6 +8,7 @@ import { RESET_STORE } from './debug';
 import { store } from '../App'
 import { addActivityRange } from './activities'
 
+
 export function addLocation(payload) {
   return {
     type: ADD_LOCATION,

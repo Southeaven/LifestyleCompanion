@@ -6,11 +6,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import Main from './Main';
 import createStore from './store';
+export const { store, persistor } = createStore()
+import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import {getDistance} from 'geolib'
 import {activateLocation, deactivateLocation} from './store/locations'
-export const { store, persistor } = createStore()
-import * as Location from 'expo-location';
 
 TaskManager.defineTask('geoTask', ({ data: { locations }, error }) => {
   const definedLocations = store.getState().locations;
@@ -33,7 +33,8 @@ TaskManager.defineTask('geoTask', ({ data: { locations }, error }) => {
 
 });
 
-export function startLocalizationTasks() {
+
+export async function startLocalizationTasks() {
   console.log("Starting geotasks")
   /*const locations = store.getState().locations;
   let geofencingRegions = [];
@@ -48,9 +49,11 @@ export function startLocalizationTasks() {
     });
   }*/
   //await Location.startGeofencingAsync('geoTask', geofencingRegions);
-  Location.startLocationUpdatesAsync('geoTask', {
-    accuracy: Location.Accuracy.Balanced
-  });
+  await Location.requestPermissionsAsync();
+  await Location.startLocationUpdatesAsync('geoTask', {
+    accuracy: Location.Accuracy.Highest
+  })
+  
 }
 
 function App() {
@@ -68,5 +71,6 @@ function App() {
     </Provider>
   );
 }
+
 
 export default registerRootComponent(App)

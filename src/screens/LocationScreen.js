@@ -22,7 +22,7 @@ import {
   removeLocation,
 } from '../store/locations';
 import { pow } from 'react-native-reanimated';
-import {startLocalizationTasks} from '../App'
+//import {startLocalizationTasks} from '../App'
 
 const CONTROL_STATE = { NONE: 0, ADD: 1, REMOVE: 2, ADDING_FORM: 3 };
 
