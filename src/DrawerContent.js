@@ -25,12 +25,12 @@ function DrawerContent({ navigation, ...props }) {
             onPress={() => navigation.navigate('WorkScreen')}
           />
           <DrawerItem
-            label="Statistics screen"
+            label="Statistics"
             onPress={() => navigation.navigate('StatisticsScreen')}
           />
           <DrawerItem
-            label="DEBUG SCREEN"
-            onPress={() => navigation.navigate('DebugScreen')}
+            label="Options"
+            onPress={() => navigation.navigate('OptionsScreen')}
           />
         </Drawer.Section>
       </View>

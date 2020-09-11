@@ -134,10 +134,7 @@ export default function activities(state = [], action) {
         prepareActionPayload(action.payload, false),
       ];
     case REMOVE_ACTIVITY:
-      return [
-        ...state.slice(0, action.payload),
-        ...state.slice(action.payload + 1)
-      ];
+      return [...state].filter((el) => el.id !== action.payload.id);
     case RESET_STORE:
       return [];
     default:

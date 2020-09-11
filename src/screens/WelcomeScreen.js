@@ -47,6 +47,13 @@ function WelcomeScreen({ navigation, ...props }) {
       >
         Manage works
       </Button>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('OptionsScreen')}
+        style={styles.button}
+      >
+        Options
+      </Button>
     </View>
   );
 }

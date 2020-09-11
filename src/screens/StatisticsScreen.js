@@ -17,6 +17,7 @@ import {
 } from 'react-native-paper';
 import { format } from 'date-fns';
 import { VictoryPie } from "victory-native";
+import { removeActivity } from '../store/activities';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,11 +30,18 @@ const styles = StyleSheet.create({
 
 const CUTOFF_POINT = 0.05;
 
-function ActivityModal({ visible, onDismiss, activity }) {
+function ActivityModal({ visible, onDismiss, activity, onRemoveActivity }) {
   const startDate = format(new Date(activity.startDate), 'yyyy/MM/dd');
   const startTime = format(new Date(activity.startDate), 'HH:mm');
   const stopDate = format(new Date(activity.stopDate), 'yyyy/MM/dd');
   const stopTime = format(new Date(activity.stopDate), 'HH:mm');
+
+  const handleRemoveActivity = () => {
+    onRemoveActivity({
+      id: activity.id,
+    });
+    onDismiss();
+  };
 
   return (
     <Dialog visible={visible} onDismiss={onDismiss}>
@@ -45,14 +53,14 @@ function ActivityModal({ visible, onDismiss, activity }) {
         <List.Item title="Stop time" description={stopTime} />
       </Dialog.Content>
       <Dialog.Actions>
-        <Button onPress={() => (console.log('Boink'))}>Delete (NOT WORKING YET)</Button>
+        <Button onPress={() => handleRemoveActivity()}>Delete</Button>
         <Button onPress={onDismiss}>Close</Button>
       </Dialog.Actions>
     </Dialog>
   );
 }
 
-function StatisticsScreen({ activities, rawActivities, ...props }) {
+function StatisticsScreen({ activities, rawActivities, removeOneActivity, ...props }) {
   const deviceWidth = Dimensions.get('window').width;
 
   const [showModal, setShowModal] = useState(false);
@@ -103,11 +111,16 @@ function StatisticsScreen({ activities, rawActivities, ...props }) {
         padding={100}
         width={deviceWidth}
       />
-      {activityData !== null && (
         <Portal>
-          <ActivityModal visible={showModal} onDismiss={() => setShowModal(false)} activity={activityData} />
+          {activityData !== null && (
+            <ActivityModal
+              visible={showModal}
+              onDismiss={() => setShowModal(false)}
+              activity={activityData}
+              onRemoveActivity={removeOneActivity}
+            />
+          )}
         </Portal>
-      )}
     </ScrollView>
   );
 }
@@ -155,4 +168,12 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(StatisticsScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    removeOneActivity: activity => {
+      dispatch(removeActivity(activity))
+    },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StatisticsScreen);
