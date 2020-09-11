@@ -6,6 +6,7 @@ import ActivityForm from './screens/ActivityForm';
 import LocationScreen from './screens/LocationScreen';
 import StatisticsScreen from './screens/StatisticsScreen';
 import DebugScreen from './screens/DebugScreen';
+import WorkScreen from './screens/WorkScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ function HomeScreen() {
       <Stack.Screen name="LocationScreen" component={LocationScreen} />
       <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} />
       <Stack.Screen name="DebugScreen" component={DebugScreen} />
+      <Stack.Screen name="WorkScreen" component={WorkScreen} />
     </Stack.Navigator>
   );
 }

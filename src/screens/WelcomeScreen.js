@@ -40,6 +40,13 @@ function WelcomeScreen({ navigation, ...props }) {
       >
         Manage locations
       </Button>
+      <Button
+        mode="contained"
+        onPress={() => navigation.navigate('WorkScreen')}
+        style={styles.button}
+      >
+        Manage works
+      </Button>
     </View>
   );
 }
