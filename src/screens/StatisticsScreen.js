@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
   container: {
     margin: 10
   },
+  centeredContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: 10,
+  },
   marginTop: {
     marginTop: 5
   },
@@ -94,34 +101,44 @@ function StatisticsScreen({ activities, rawActivities, removeOneActivity, ...pro
   });
 
   return (
-    <ScrollView style={styles.container}>
-      <Subheading>Activity data</Subheading>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Name</DataTable.Title>
-          <DataTable.Title>Length</DataTable.Title>
-          <DataTable.Title>Action</DataTable.Title>
-        </DataTable.Header>
-        {listItems}
-      </DataTable>
-      <Subheading>Activity chart</Subheading>
-      <VictoryPie
-        colorScale="qualitative"
-        data={activities}
-        padding={100}
-        width={deviceWidth}
-      />
-        <Portal>
-          {activityData !== null && (
-            <ActivityModal
-              visible={showModal}
-              onDismiss={() => setShowModal(false)}
-              activity={activityData}
-              onRemoveActivity={removeOneActivity}
-            />
-          )}
-        </Portal>
-    </ScrollView>
+    <>
+      {
+        !rawActivities.length ? (
+          <View style={styles.centeredContainer}>
+            <Subheading>No activities available</Subheading>
+          </View>
+        ) : (
+            <ScrollView style={styles.container}>
+              <Subheading>Activity data</Subheading>
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title>Name</DataTable.Title>
+                  <DataTable.Title>Length</DataTable.Title>
+                  <DataTable.Title>Action</DataTable.Title>
+                </DataTable.Header>
+                {listItems}
+              </DataTable>
+              <Subheading>Activity chart</Subheading>
+              <VictoryPie
+                colorScale="qualitative"
+                data={activities}
+                padding={100}
+                width={deviceWidth}
+              />
+              <Portal>
+                {activityData !== null && (
+                  <ActivityModal
+                    visible={showModal}
+                    onDismiss={() => setShowModal(false)}
+                    activity={activityData}
+                    onRemoveActivity={removeOneActivity}
+                  />
+                )}
+              </Portal>
+            </ScrollView>
+          )
+      }
+    </>
   );
 }
 
