@@ -189,7 +189,6 @@ function LocationScreen({ locations, addLocationX, removeLocationX }) {
           setControlState(CONTROL_STATE.ADDING_FORM)
       }}>
       </SimpleMap>
-      <Text>{text}</Text>
     </View>
   );
 }
