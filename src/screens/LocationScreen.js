@@ -89,14 +89,14 @@ function drawButtons(state, setControlState) {
   } else if (state == CONTROL_STATE.ADD || state == CONTROL_STATE.ADDING_FORM) {
     return (
       <View style={styles.containerButtons}>
-        <Text style={{ margin: 15 }}>Przytrzymaj palec na lokalizacji aby ją dodać!</Text>
+        <Text style={{ margin: 15 }}>Hold your finget on location to add!</Text>
       </View>
     )
 
   } else if (state == CONTROL_STATE.REMOVE || state == CONTROL_STATE.REMOVING_FORM) {
     return (
       <View style={styles.containerButtons}>
-        <Text style={{ margin: 15 }}>Przytrzymaj palec na lokalizacji aby ją usunąć.</Text>
+        <Text style={{ margin: 15 }}>Hold your finget on location to remove!</Text>
       </View>
     )
   }
