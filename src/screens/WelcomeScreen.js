@@ -49,10 +49,10 @@ function WelcomeScreen({ navigation, ...props }) {
       </Button>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate('OptionsScreen')}
+        onPress={() => navigation.navigate('StatisticsScreen')}
         style={styles.button}
       >
-        Options
+        Statistics
       </Button>
     </View>
   );
